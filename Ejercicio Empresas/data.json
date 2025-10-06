@@ -1,0 +1,212 @@
+[
+  {
+    "Registro": 1,
+    "Empresa": "Empresa 1",
+    "Mes": 1,
+    "ProduccionTotal": 590,
+    "CantidaPiezasConFallas": 125
+  },
+  {
+    "Registro": 2,
+    "Empresa": "Empresa 2",
+    "Mes": 1,
+    "ProduccionTotal": 775,
+    "CantidaPiezasConFallas": 113
+  },
+  {
+    "Registro": 3,
+    "Empresa": "Empresa 3",
+    "Mes": 1,
+    "ProduccionTotal": 502,
+    "CantidaPiezasConFallas": 81
+  },
+  {
+    "Registro": 4,
+    "Empresa": "Empresa 4",
+    "Mes": 1,
+    "ProduccionTotal": 515,
+    "CantidaPiezasConFallas": 30
+  },
+  {
+    "Registro": 5,
+    "Empresa": "Empresa 5",
+    "Mes": 1,
+    "ProduccionTotal": 765,
+    "CantidaPiezasConFallas": 185
+  },
+  {
+    "Registro": 6,
+    "Empresa": "Empresa 1",
+    "Mes": 2,
+    "ProduccionTotal": 602,
+    "CantidaPiezasConFallas": 48
+  },
+  {
+    "Registro": 7,
+    "Empresa": "Empresa 2",
+    "Mes": 2,
+    "ProduccionTotal": 586,
+    "CantidaPiezasConFallas": 48
+  },
+  {
+    "Registro": 8,
+    "Empresa": "Empresa 3",
+    "Mes": 2,
+    "ProduccionTotal": 533,
+    "CantidaPiezasConFallas": 154
+  },
+  {
+    "Registro": 9,
+    "Empresa": "Empresa 4",
+    "Mes": 2,
+    "ProduccionTotal": 838,
+    "CantidaPiezasConFallas": 125
+  },
+  {
+    "Registro": 10,
+    "Empresa": "Empresa 5",
+    "Mes": 2,
+    "ProduccionTotal": 956,
+    "CantidaPiezasConFallas": 113
+  },
+  {
+    "Registro": 11,
+    "Empresa": "Empresa 1",
+    "Mes": 3,
+    "ProduccionTotal": 699,
+    "CantidaPiezasConFallas": 169
+  },
+  {
+    "Registro": 12,
+    "Empresa": "Empresa 2",
+    "Mes": 3,
+    "ProduccionTotal": 649,
+    "CantidaPiezasConFallas": 119
+  },
+  {
+    "Registro": 13,
+    "Empresa": "Empresa 3",
+    "Mes": 3,
+    "ProduccionTotal": 730,
+    "CantidaPiezasConFallas": 33
+  },
+  {
+    "Registro": 14,
+    "Empresa": "Empresa 4",
+    "Mes": 3,
+    "ProduccionTotal": 944,
+    "CantidaPiezasConFallas": 22
+  },
+  {
+    "Registro": 15,
+    "Empresa": "Empresa 5",
+    "Mes": 3,
+    "ProduccionTotal": 723,
+    "CantidaPiezasConFallas": 10
+  },
+  {
+    "Registro": 16,
+    "Empresa": "Empresa 1",
+    "Mes": 4,
+    "ProduccionTotal": 809,
+    "CantidaPiezasConFallas": 96
+  },
+  {
+    "Registro": 17,
+    "Empresa": "Empresa 2",
+    "Mes": 4,
+    "ProduccionTotal": 942,
+    "CantidaPiezasConFallas": 174
+  },
+  {
+    "Registro": 18,
+    "Empresa": "Empresa 3",
+    "Mes": 4,
+    "ProduccionTotal": 588,
+    "CantidaPiezasConFallas": 132
+  },
+  {
+    "Registro": 19,
+    "Empresa": "Empresa 4",
+    "  ": 4,
+    "ProduccionTotal": 768,
+    "CantidaPiezasConFallas": 155
+  },
+  {
+    "Registro": 20,
+    "Empresa": "Empresa 5",
+    "Mes": 4,
+    "ProduccionTotal": 930,
+    "CantidaPiezasConFallas": 13
+  },
+  {
+    "Registro": 21,
+    "Empresa": "Empresa 1",
+    "Mes": 5,
+    "ProduccionTotal": 754,
+    "CantidaPiezasConFallas": 196
+  },
+  {
+    "Registro": 22,
+    "Empresa": "Empresa 2",
+    "Mes": 5,
+    "ProduccionTotal": 515,
+    "CantidaPiezasConFallas": 162
+  },
+  {
+    "Registro": 23,
+    "Empresa": "Empresa 3",
+    "Mes": 5,
+    "ProduccionTotal": 646,
+    "CantidaPiezasConFallas": 100
+  },
+  {
+    "Registro": 24,
+    "Empresa": "Empresa 4",
+    "Mes": 5,
+    "ProduccionTotal": 621,
+    "CantidaPiezasConFallas": 82
+  },
+  {
+    "Registro": 25,
+    "Empresa": "Empresa 5",
+    "Mes": 5,
+    "ProduccionTotal": 688,
+    "CantidaPiezasConFallas": 164
+  },
+  {
+    "Registro": 26,
+    "Empresa": "Empresa 1",
+    "Mes": 6,
+    "ProduccionTotal": 744,
+    "CantidaPiezasConFallas": 154
+  },
+  {
+    "Registro": 27,
+    "Empresa": "Empresa 2",
+    "Mes": 6,
+    "ProduccionTotal": 518,
+    "CantidaPiezasConFallas": 55
+  },
+  {
+    "Registro": 28,
+    "Empresa": "Empresa 3",
+    "Mes": 6,
+    "ProduccionTotal": 660,
+    "CantidaPiezasConFallas": 52
+  },
+  {
+    "Registro": 29,
+    "Empresa": "Empresa 4",
+    "Mes": 6,
+    "ProduccionTotal": 591,
+    "CantidaPiezasConFallas": 32
+  },
+  {
+    "Registro": 30,
+    "Empresa": "Empresa 5",
+    "Mes": 6,
+    "ProduccionTotal": 574,
+    "CantidaPiezasConFallas": 32
+  }
+]

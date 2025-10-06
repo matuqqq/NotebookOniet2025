@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de empresas</title>
+<style>
+     table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+</style>
+
+</head>
+
+<body>
+    <h1>
+        Oniet Gestion Empresas
+    </h1>
+
+    <table id="tabla">
+        <thead>
+        <tr>
+            <th>
+                Nombre de empresa
+            </th>
+            <th>
+                ProduccionTotal
+            </th>
+            <th>
+                CantidadFallas
+            </th>
+            <th>
+                Cantidad OK
+            </th>
+            <th>
+                Porcentaje OK
+            </th>
+            <th>
+                Porcentaje falla
+            </th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+</body>
+
+</html>
+
+<script>
+    async function fetchearData() {
+        const response = await fetch('http://172.16.6.149:3001/data')
+        const data = await response.json();
+        const tableBody = document.getElementById("tabla")
+    console.log(data);
+        Object.values(data).forEach(empresa => {
+            const row = document.createElement("tr")
+            
+            row.innerHTML = ` 
+            <td>${empresa.Empresa} </td> 
+            <td>${empresa.ProduccionTotal} </td> 
+            <td>${empresa.CantidaPiezasConFallas} </td> 
+            <td>${empresa.CantidadPiezasOk} </td>
+            <td>${empresa.PPiezasOk.toFixed(2)} </td>
+            <td>${empresa.PPiezasError.toFixed(2)} </td>
+            `
+
+        tableBody.appendChild(row);
+            
+        });
+    }
+    window.onload = fetchearData;
+</script>
