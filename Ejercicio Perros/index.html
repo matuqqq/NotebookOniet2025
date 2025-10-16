@@ -55,7 +55,7 @@
 
     table {
       margin: 30px auto;
-      width: 80%;
+      width: 90%;
       border-collapse: collapse;
       background: white;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -77,6 +77,85 @@
 
     tr:nth-child(even) {
       background-color: #f2f2f2;
+    }
+
+    .btn-borrar {
+      background-color: #e53935;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .btn-borrar:hover {
+      background-color: #c62828;
+    }
+
+    .btn-editar {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+
+    .btn-editar:hover {
+      background-color: #0d47a1;
+    }
+
+    /* ----- Modal ----- */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 400px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+    }
+
+    .cerrar {
+      background-color: #777;
+    }
+
+    .cerrar:hover {
+      background-color: #555;
     }
   </style>
 </head>
@@ -104,23 +183,52 @@
         <th onclick="ordenar('edad')">Edad</th>
         <th onclick="ordenar('peso')">Peso</th>
         <th onclick="ordenar('fecha_ingreso')">Fecha de ingreso</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody id="tabla"></tbody>
   </table>
+
+  <!-- Modal para edición -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2>Editar perro</h2>
+      <form id="formEditar">
+        <input type="hidden" id="edit_id" />
+
+        <label for="edit_nombre">Nombre:</label>
+        <input type="text" id="edit_nombre" required />
+
+        <label for="edit_raza">Raza:</label>
+        <input type="text" id="edit_raza" required />
+
+        <label for="edit_edad">Edad (años):</label>
+        <input type="number" id="edit_edad" min="0" required />
+
+        <label for="edit_peso">Peso (kg):</label>
+        <input type="number" id="edit_peso" step="0.1" min="0" required />
+
+        <label for="edit_fecha_ingreso">Fecha de ingreso:</label>
+        <input type="date" id="edit_fecha_ingreso" required />
+
+        <button type="submit">💾 Guardar cambios</button>
+        <button type="button" class="cerrar" onclick="cerrarModal()">Cancelar</button>
+      </form>
+    </div>
+  </div>
 
   <script>
     let ordenActual = { campo: null, tipo: 'asc' };
 
     async function cargarData(url = 'http://localhost:3000') {
       const tabla = document.getElementById("tabla");
-      tabla.innerHTML = "<tr><td colspan='6'>Cargando...</td></tr>";
+      tabla.innerHTML = "<tr><td colspan='7'>Cargando...</td></tr>";
       try {
         const response = await fetch(url);
         const data = await response.json();
         renderTabla(data);
       } catch (err) {
-        tabla.innerHTML = "<tr><td colspan='6'>Error cargando datos</td></tr>";
+        tabla.innerHTML = "<tr><td colspan='7'>Error cargando datos</td></tr>";
         console.error(err);
       }
     }
@@ -129,7 +237,7 @@
       const tabla = document.getElementById("tabla");
       tabla.innerHTML = "";
       if (perros.length === 0) {
-        tabla.innerHTML = "<tr><td colspan='6'>No se encontraron registros</td></tr>";
+        tabla.innerHTML = "<tr><td colspan='7'>No se encontraron registros</td></tr>";
         return;
       }
 
@@ -142,6 +250,10 @@
           <td>${perro.edad}</td>
           <td>${perro.peso}</td>
           <td>${perro.fecha_ingreso}</td>
+          <td>
+            <button class="btn-editar" onclick="abrirModal(${perro.id})">✏️ Editar</button>
+            <button class="btn-borrar" onclick="borrar(${perro.id})">🗑️ Eliminar</button>
+          </td>
         `;
         tabla.appendChild(row);
       });
@@ -167,6 +279,68 @@
       if (valor) url += `&nombre=${encodeURIComponent(valor)}`;
       await cargarData(url);
     }
+
+    async function borrar(id) {
+      if (!confirm(`¿Seguro que deseas eliminar al perro con ID ${id}?`)) return;
+      try {
+        const response = await fetch(`http://localhost:3000/${id}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Error al borrar');
+        await cargarData();
+      } catch (err) {
+        alert('⚠️ No se pudo eliminar el perro.');
+        console.error(err);
+      }
+    }
+
+    async function abrirModal(id) {
+      try {
+        const res = await fetch(`http://localhost:3000/${id}`);
+        const perro = await res.json();
+
+        document.getElementById('edit_id').value = perro.id;
+        document.getElementById('edit_nombre').value = perro.nombre;
+        document.getElementById('edit_raza').value = perro.raza;
+        document.getElementById('edit_edad').value = perro.edad;
+        document.getElementById('edit_peso').value = perro.peso;
+        document.getElementById('edit_fecha_ingreso').value = perro.fecha_ingreso;
+
+        document.getElementById('modal').style.display = 'flex';
+      } catch (err) {
+        alert('Error cargando datos del perro.');
+        console.error(err);
+      }
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    document.getElementById('formEditar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit_id').value;
+      const data = {
+        nombre: document.getElementById('edit_nombre').value.trim(),
+        raza: document.getElementById('edit_raza').value.trim(),
+        edad: Number(document.getElementById('edit_edad').value),
+        peso: Number(document.getElementById('edit_peso').value),
+        fecha_ingreso: document.getElementById('edit_fecha_ingreso').value
+      };
+
+      try {
+        const res = await fetch(`http://localhost:3000/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (!res.ok) throw new Error('Error al actualizar');
+        cerrarModal();
+        await cargarData();
+      } catch (err) {
+        alert('⚠️ No se pudo actualizar el perro.');
+        console.error(err);
+      }
+    });
 
     // Cargar datos iniciales
     cargarData();
