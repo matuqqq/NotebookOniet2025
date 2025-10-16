@@ -1,18 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="submit">
-        <label for="nombre">
-            nombre:
-        </label>
-<input type="text">
-input
-    </form>
+<html lang="es">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir nuevo perro</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    form {
+      background: white;
+      max-width: 450px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .msg {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .link {
+      text-align: center;
+      display: block;
+      margin-top: 15px;
+      color: #0066cc;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Registrar nuevo perro</h1>
+
+  <form id="formulario">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" required>
+
+    <label for="raza">Raza:</label>
+    <input type="text" id="raza" required>
+
+    <label for="edad">Edad (años):</label>
+    <input type="number" id="edad" min="0" required>
+
+    <label for="peso">Peso (kg):</label>
+    <input type="number" id="peso" min="0" step="0.1" required>
+
+    <label for="fecha_ingreso">Fecha de ingreso:</label>
+    <input type="date" id="fecha_ingreso" required>
+
+    <button type="submit">Guardar</button>
+    <div id="mensaje" class="msg"></div>
+  </form>
+
+  <a href="index.html" class="link">⬅ Volver al listado</a>
+
+  <script>
+    const form = document.getElementById('formulario');
+    const msg = document.getElementById('mensaje');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+
+      const nuevoPerro = {
+        nombre: document.getElementById('nombre').value.trim(),
+        raza: document.getElementById('raza').value.trim(),
+        edad: Number(document.getElementById('edad').value),
+        peso: Number(document.getElementById('peso').value),
+        fecha_ingreso: document.getElementById('fecha_ingreso').value
+      };
+
+      // Validación mínima
+      if (!nuevoPerro.nombre || !nuevoPerro.raza || !nuevoPerro.fecha_ingreso) {
+        msg.style.color = 'red';
+        msg.textContent = 'Por favor completa todos los campos obligatorios.';
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(nuevoPerro)
+        });
+
+        if (!response.ok) throw new Error('Error al guardar');
+        const data = await response.json();
+
+        msg.style.color = 'green';
+        msg.textContent = '✅ Perro registrado con éxito. Redirigiendo...';
+        setTimeout(() => window.location.href = 'index.html', 1500);
+
+      } catch (err) {
+        console.error(err);
+        msg.style.color = 'red';
+        msg.textContent = '⚠️ Error al guardar el registro.';
+      }
+    });
+  </script>
 </body>
+
 </html>

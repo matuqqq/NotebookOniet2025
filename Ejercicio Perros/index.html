@@ -1,106 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Perros - Veterinaria</title>
 
-    <style>
-        .cont_barra_busqueda {
-            margin: 20px auto;
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-        }
-        
-        table {
-            margin: 30px auto;
-            width: 75%;
-            border-collapse: collapse;
-        }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
 
-        td {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+    }
 
-        tr {
-            background-color: #f2f2f2;
-        }
-    </style>
+    .cont_barra_busqueda {
+      margin: 20px auto;
+      text-align: center;
+    }
 
+    input[type="text"] {
+      padding: 8px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 8px 14px;
+      margin-left: 6px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      display: inline-block;
+      margin: 10px auto;
+      text-align: center;
+      color: #0066cc;
+    }
+
+    table {
+      margin: 30px auto;
+      width: 80%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="cont_barra_busqueda">
+  <h1>Gestión de Perros</h1>
 
-        <label for="barra_busqueda">Buscar:</label>
-        <input type="text" id="barra_busqueda" name="q" placeholder="Introduce tu búsqueda...">
-        <button onclick="buscar()">Buscar</button>
-    </div>
+  <div class="cont_barra_busqueda">
+    <label for="barra_busqueda">Buscar:</label>
+    <input type="text" id="barra_busqueda" placeholder="Introduce el nombre..." />
+    <button onclick="buscar()">Buscar</button>
+    <button onclick="cargarData()">Reiniciar</button>
+  </div>
 
-    <div >
-        
-            <a href="./form.html">Añadir nuevo perro</a>
-        </div>
-    <table>
-        <tr>
-            <td>Numero</td>
-            <td>Nombre</td>
-            <td>Raza</td>
-            <td>Edad</td>
-            <td>Peso</td>
-            <td>Fecha de ingreso</td>
-        </tr>
-        <tbody id="tabla">
+  <div style="text-align: center;">
+    <a href="./form.html">➕ Añadir nuevo perro</a>
+  </div>
 
-        </tbody>
-    </table>
-</body>
+  <table>
+    <thead>
+      <tr>
+        <th onclick="ordenar('id')">#</th>
+        <th onclick="ordenar('nombre')">Nombre</th>
+        <th onclick="ordenar('raza')">Raza</th>
+        <th onclick="ordenar('edad')">Edad</th>
+        <th onclick="ordenar('peso')">Peso</th>
+        <th onclick="ordenar('fecha_ingreso')">Fecha de ingreso</th>
+      </tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+  </table>
 
+  <script>
+    let ordenActual = { campo: null, tipo: 'asc' };
 
-<script>
-    async function cargarData(){
-        const tabla = document.getElementById("tabla");
-        tabla.innerHTML = ""
-        const response = await fetch('http://localhost:3000')
-        console.log(response);
+    async function cargarData(url = 'http://localhost:3000') {
+      const tabla = document.getElementById("tabla");
+      tabla.innerHTML = "<tr><td colspan='6'>Cargando...</td></tr>";
+      try {
+        const response = await fetch(url);
         const data = await response.json();
-        Object.values(data).forEach(perro => {
-            const row = document.createElement("tr")
-            row.innerHTML = `
-    <td> ${perro.id} </td>
-    <td> ${perro.nombre} </td>
-    <td> ${perro.raza} </td>
-    <td> ${perro.edad} </td>
-    <td> ${perro.peso} </td>
-    <td> ${perro.fecha_ingreso} </td>
-    `
-            tabla.appendChild(row)
-        })
-    };
-    async function buscar() {
-        const tabla = document.getElementById("tabla");
-        const valor = document.getElementById("barra_busqueda").value;
-        tabla.innerHTML = ""
-        const response = fetch('http://localhost:3000')
-        const data = await response.json();
-        Object.values(data).forEach(perro => {
-            const row = document.createElement("tr")
-            row.innerHTML = `
-    <td> ${perro.id} </td>
-    <td> ${perro.nombre} </td>
-    <td> ${perro.raza} </td>
-    <td> ${perro.edad} </td>
-    <td> ${perro.peso} </td>
-    <td> ${perro.fecha_ingreso} </td>
-    `
-            tabla.appendChild(row)
-        });
+        renderTabla(data);
+      } catch (err) {
+        tabla.innerHTML = "<tr><td colspan='6'>Error cargando datos</td></tr>";
+        console.error(err);
+      }
     }
+
+    function renderTabla(perros) {
+      const tabla = document.getElementById("tabla");
+      tabla.innerHTML = "";
+      if (perros.length === 0) {
+        tabla.innerHTML = "<tr><td colspan='6'>No se encontraron registros</td></tr>";
+        return;
+      }
+
+      perros.forEach(perro => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${perro.id}</td>
+          <td>${perro.nombre}</td>
+          <td>${perro.raza}</td>
+          <td>${perro.edad}</td>
+          <td>${perro.peso}</td>
+          <td>${perro.fecha_ingreso}</td>
+        `;
+        tabla.appendChild(row);
+      });
+    }
+
+    async function buscar() {
+      const valor = document.getElementById("barra_busqueda").value.trim();
+      let url = 'http://localhost:3000';
+      if (valor) url += `?nombre=${encodeURIComponent(valor)}`;
+      await cargarData(url);
+    }
+
+    async function ordenar(campo) {
+      if (ordenActual.campo === campo) {
+        ordenActual.tipo = ordenActual.tipo === 'asc' ? 'desc' : 'asc';
+      } else {
+        ordenActual.campo = campo;
+        ordenActual.tipo = 'asc';
+      }
+
+      const valor = document.getElementById("barra_busqueda").value.trim();
+      let url = `http://localhost:3000?sort=${campo}&order=${ordenActual.tipo}`;
+      if (valor) url += `&nombre=${encodeURIComponent(valor)}`;
+      await cargarData(url);
+    }
+
+    // Cargar datos iniciales
     cargarData();
-</script>
+  </script>
+</body>
 
 </html>
