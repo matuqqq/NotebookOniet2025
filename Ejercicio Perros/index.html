@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .cont_barra_busqueda {
+            margin: 20px auto;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        
+        table {
+            margin: 30px auto;
+            width: 75%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        tr {
+            background-color: #f2f2f2;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="cont_barra_busqueda">
+
+        <label for="barra_busqueda">Buscar:</label>
+        <input type="text" id="barra_busqueda" name="q" placeholder="Introduce tu búsqueda...">
+        <button onclick="buscar()">Buscar</button>
+    </div>
+
+    <div >
+        
+            <a href="./form.html">Añadir nuevo perro</a>
+        </div>
+    <table>
+        <tr>
+            <td>Numero</td>
+            <td>Nombre</td>
+            <td>Raza</td>
+            <td>Edad</td>
+            <td>Peso</td>
+            <td>Fecha de ingreso</td>
+        </tr>
+        <tbody id="tabla">
+
+        </tbody>
+    </table>
+</body>
+
+
+<script>
+    async function cargarData(){
+        const tabla = document.getElementById("tabla");
+        tabla.innerHTML = ""
+        const response = await fetch('http://localhost:3000')
+        console.log(response);
+        const data = await response.json();
+        Object.values(data).forEach(perro => {
+            const row = document.createElement("tr")
+            row.innerHTML = `
+    <td> ${perro.id} </td>
+    <td> ${perro.nombre} </td>
+    <td> ${perro.raza} </td>
+    <td> ${perro.edad} </td>
+    <td> ${perro.peso} </td>
+    <td> ${perro.fecha_ingreso} </td>
+    `
+            tabla.appendChild(row)
+        })
+    };
+    async function buscar() {
+        const tabla = document.getElementById("tabla");
+        const valor = document.getElementById("barra_busqueda").value;
+        tabla.innerHTML = ""
+        const response = fetch('http://localhost:3000')
+        const data = await response.json();
+        Object.values(data).forEach(perro => {
+            const row = document.createElement("tr")
+            row.innerHTML = `
+    <td> ${perro.id} </td>
+    <td> ${perro.nombre} </td>
+    <td> ${perro.raza} </td>
+    <td> ${perro.edad} </td>
+    <td> ${perro.peso} </td>
+    <td> ${perro.fecha_ingreso} </td>
+    `
+            tabla.appendChild(row)
+        });
+    }
+    cargarData();
+</script>
+
+</html>
